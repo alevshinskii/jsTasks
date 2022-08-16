@@ -6,5 +6,119 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Task #2</title>
     </head>
-    <body></body>
+    <body style="margin-left: 5%; width: 50%">
+        <h1>Task #2</h1>
+        <p>
+            Написать следующий метод. На вход приходит массив чисел. <br />[41,
+            55, 61, 1, 8, 27, 37 , 39]<br />
+            Необходимо осортировать его по возрастанию.<br />
+            Например так: <br />[1, 8, 27, 37 , 39, 41, 55, 61] <br />Далее
+            берется первое число, ищутся все числа, в которых есть хоть одна
+            цифра из этого числа. Такие числа удаляются. И исходное число тоже
+            есть совпадения.<br />
+            [8, 27, 37 , 39, 55]<br />
+            Далее снова. 8 ни с чем не совпадает - берется слеующее число.<br />
+            [8, 27, 37 , 39, 55]<br />
+            После проверки числа 27 уберутся 27 и 37.<br />
+            [8, 39, 55] <br />Дальнейшие проверки уже не изменят массив. ВЫВОД В
+            КОНСОЛЬ текущего массива [8, 39, 55]. Проверка, имеет ли смысл
+            продолжать. Остановка происходит в одно их 3 случаев: - если в
+            массиве всего одно число осталось - если в массиве ни одного чилса
+            не осталось - если размер массива в этом этапе не изменился.<br />
+            Если условие останова выполнено, то возвращаем массив. Если нет, то
+            далее следующее:<br />
+            Затем необходимо отобразить все числа в обратном порядке цифр.
+            <br />[8, 93, 55] <br />Затем возвести все числа в квадрат.
+            <br />[64, 8649, 3025].<br />
+            Далее с этим массивом происходит то же самое.<br />
+            Сортировка: <br />[64, 3025, 8649]<br />
+            Поиск совпадений: <br />[3025]<br />
+            Вывод в консоль: <br />[3025]<br />
+            Проверка на оставновку: останавливаемся и возвращаем.<br />
+            [3025] <br />Еще раз этапы: <br />Сортировка <br />Поиски совпадений
+            <br />Вывод в консоль <br />Если есть условие останова вернуть
+            массив из метода <br />Иначе поменять порядок цифр в числе возвести
+            числа в квадрат начать заново со свежим массивом
+        </p>
+        <button onclick="start()">Start</button>
+    </body>
 </html>
+<script>
+    function start() {
+        let input = prompt(
+            "Введите числа через пробел, например 41 55 61 1 8 27 37 39"
+        )
+            .toString()
+            .split(" ");
+        let array = [];
+        Array.from(input).forEach((num) => {
+            if (num.length > 0) array.push(num);
+        });
+
+        console.log("Введён массив: ");
+        printArray(array);
+        doOperations(array);
+    }
+
+    function doOperations(array) {
+        let lastLength = -1;
+        while (true) {
+            array.sort((a, b) => Number(a) - Number(b));
+            console.log("Сортировка: ");
+            printArray(array);
+
+            let k = 0;
+            while (k < array.length) {
+                let num = array[k];
+                let isAnyItemRemoved = false;
+                for (let i = 0; i < num.length; i++) {
+                    for (let j = array.length - 1; j > k; j--) {
+                        if (j < array.length && array[j].includes(num[i])) {
+                            isAnyItemRemoved = true;
+                            array.splice(j, 1);
+                        }
+                    }
+                }
+                if (isAnyItemRemoved) {
+                    array.splice(k, 1);
+                    k = 0;
+                } else {
+                    k++;
+                }
+            }
+            console.log("Поиск совпадений: ");
+            printArray(array);
+
+            if (
+                array.length == 1 ||
+                array.length == lastLength ||
+                array.length == 0
+            ) {
+                console.log("Результат:");
+                printArray(array);
+                alert("Результат в консоли");
+                break;
+            }
+            lastLength = array.length;
+
+            reversedNumsArray = [];
+            array.forEach((num) => {
+                let reversed = [...num].reverse().join("");
+                reversedNumsArray.push((+reversed * +reversed).toString());
+            });
+            array = reversedNumsArray;
+            console.log("Смена порядка в числе и возведение в квадрат: ");
+            printArray(array);
+        }
+    }
+
+    function printArray(array) {
+        let out = "[ ";
+        for (let i = 0; i < array.length; i++) {
+            if (i != array.length - 1) out = out + array[i] + " , ";
+            else out = out + array[i];
+        }
+        out = out + " ]";
+        console.log(out);
+    }
+</script>

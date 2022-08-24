@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Task #3</title>
+    </head>
+    <body style="margin-left: 5%; width: 50%">
+        <h1>Task #3</h1>
+        <a href="index.html"><h3>Вернуться</h3></a>
+        <p>
+            Условная компьютерная игра.<br />
+            Есть склады, в которых хранятся разноцветные шарики (красные,
+            зеленые, синие - не важно какие).<br />
+            Приходят воры которые хочет украсить шарики.<br />
+            У них ограничено место в мешках (не могут миллион шариков
+            унести).<br />
+            Воры должны унести шарики по цвета пропорционально тому, сколько
+            было на складе изначально.<br />
+            Например, на складе шарики разных видов: [100, 300, 200]<br />
+            В мешки вмещается 120 шариков - воры унесут [20, 60, 40].<br />
+            Задача - написать метод, который определяет сколько каких шариков
+            унесут воры<br />
+            На вход массив произвольной длины с текущим количеством шариков
+            разных цветов и число со вместимостью мешков у воров (сколько
+            шариков максимум могут унести воры).<br />
+            На выходе массив той же длины с информацией, что украли.<br />
+            Важно учитывать (в порядке понижения приоритетности):<br />
+            1. Шарики могут исчисляться только целыми числами<br />
+            2. Воры должны уйти максимально загруженными.<br />
+            3. Пропорция шариков разных цветов, что уносят воры должна быть
+            максимально точной с той, пропорцией как шарики хранились на
+            складе.<br />
+        </p>
+        <button onclick="start()" style="padding: 5px 20px">
+            <h3>Start</h3>
+        </button>
+    </body>
+</html>
+<script>
+    function start() {
+        let inputArray = prompt(
+            "Введите массив через пробел, например 100 300 200"
+        )
+            .toString()
+            .split(" ");
+        let array = [];
+        Array.from(inputArray).forEach((num) => {
+            if (num.length > 0) array.push(num);
+        });
+
+        console.log("Введён массив: ");
+        printArray(array);
+
+        let inputCapacity = prompt("Введите вместимость мешка, например 120");
+        const capacity = Number(inputCapacity);
+
+        console.log("Вместимость мешка: ");
+        console.log(capacity);
+
+        const result = GetResult(array, capacity);
+
+        console.log("Результат: ");
+        printArray(result);
+    }
+
+    function GetResult(array, capacity) {
+        let capacityRemains = capacity;
+        let resultArray = [];
+
+        let totalCount = array.reduce(function (sum, elem) {
+            return +sum + +elem;
+        }, 0);
+
+        const multiplier = capacity / totalCount;
+
+        array.forEach((item) => {
+            const newItem = Math.round(item * multiplier);
+            if (newItem < capacityRemains) {
+                resultArray.push(newItem);
+                capacityRemains -= newItem;
+            } else {
+                resultArray.push(Math.round(capacityRemains));
+            }
+        });
+
+        return resultArray;
+    }
+
+    function printArray(array) {
+        let out = "[ ";
+        for (let i = 0; i < array.length; i++) {
+            if (i != array.length - 1) out = out + array[i] + " , ";
+            else out = out + array[i];
+        }
+        out = out + " ]";
+        console.log(out);
+    }
+</script>

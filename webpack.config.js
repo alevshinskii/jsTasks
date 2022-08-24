@@ -28,6 +28,10 @@ const config = {
             template: "task2.html",
             filename: "task2.html",
         }),
+        new HtmlWebpackPlugin({
+            template: "task3.html",
+            filename: "task3.html",
+        }),
 
         // Add your plugins here
         // Learn more about plugins from https://webpack.js.org/configuration/plugins/

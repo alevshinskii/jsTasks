@@ -73,7 +73,11 @@
             return +sum + +elem;
         }, 0);
 
-        const multiplier = capacity / totalCount;
+        let multiplier = capacity / totalCount;
+
+        if (multiplier > 1) {
+            multiplier = 1;
+        }
 
         array.forEach((item) => {
             const newItem = Math.round(item * multiplier);
@@ -81,9 +85,15 @@
                 resultArray.push(newItem);
                 capacityRemains -= newItem;
             } else {
-                resultArray.push(Math.round(capacityRemains));
+                resultArray.push(capacityRemains);
+                capacityRemains = 0;
             }
         });
+
+        if (capacityRemains > 0 && multiplier < 1) {
+            let maxValue = getMaxValue(array).toString();
+            resultArray[array.indexOf(maxValue)] += capacityRemains;
+        }
 
         return resultArray;
     }
@@ -96,5 +106,16 @@
         }
         out = out + " ]";
         console.log(out);
+    }
+
+    function getMaxValue(array) {
+        let max = 0;
+
+        array.forEach((el) => {
+            if (+el > +max) {
+                max = +el;
+            }
+        });
+        return +max;
     }
 </script>
